@@ -46,3 +46,30 @@ Implement FASTA parsing and DNA sequence validation.
 
 ### Status
 FASTA parser implementation and focused unit testing completed.
+
+## Day 3 – November 15, 2026
+
+### Objective
+Develop the initial CPU-based DNA sequence alignment engine.
+
+### Work Completed
+- Implemented the Needleman-Wunsch global alignment algorithm.
+- Added configurable match, mismatch and gap scoring.
+- Implemented dynamic programming score and traceback matrices.
+- Generated aligned DNA sequences with gap characters.
+- Added mismatch position detection using 1-based alignment columns.
+- Added gap counting.
+- Implemented input validation for empty sequences and invalid DNA characters.
+- Added 8 unit tests covering alignment functionality and edge cases.
+
+### Testing
+- Command: python -m pytest tests/test_cpu_aligner.py -v
+- Result: 8 passed in 0.03 seconds.
+
+### Next Steps
+- Run the complete project test suite.
+- Establish CPU performance benchmarks.
+- Develop CRISPR-specific PAM and off-target scoring.
+
+### Status
+Initial CPU alignment implementation completed and focused tests passed.
