@@ -94,3 +94,25 @@ Establish an initial CPU sequence alignment performance baseline.
 - Analyze CPU performance.
 - Explore memory usage.
 - Prepare the CPU baseline for future GPU comparison.
+
+## Day 5 – November 17, 2026
+
+### Objective
+Implement a basic DNA alignment scoring module.
+
+### Work Completed
+- Implemented match, mismatch and gap scoring.
+- Added configurable scoring parameters.
+- Added validation for empty and unequal-length aligned sequences.
+- Added unit tests for normal and custom scoring cases.
+
+### Testing
+- Ran the complete project test suite.
+- Result: 24 tests passed.
+
+### Next Steps
+- Implement sequence chunking.
+- Prepare the alignment pipeline for larger sequence inputs.
+
+### Status
+DNA scoring module implemented and tested.
