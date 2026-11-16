@@ -73,3 +73,24 @@ Develop the initial CPU-based DNA sequence alignment engine.
 
 ### Status
 Initial CPU alignment implementation completed and focused tests passed.
+
+## Day 4 – November 16, 2026
+
+### Objective
+Establish an initial CPU sequence alignment performance baseline.
+
+### Work Completed
+- Implemented a CPU benchmarking script.
+- Tested DNA sequence lengths of 25, 50, 100 and 200 bases.
+- Measured average, minimum and maximum execution times.
+- Repeated each benchmark five times.
+- Saved benchmark measurements in JSON format.
+
+### Testing
+- Executed the CPU benchmark script.
+- Ran the complete project test suite.
+
+### Next Steps
+- Analyze CPU performance.
+- Explore memory usage.
+- Prepare the CPU baseline for future GPU comparison.

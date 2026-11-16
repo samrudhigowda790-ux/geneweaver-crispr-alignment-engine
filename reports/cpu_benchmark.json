@@ -1,0 +1,30 @@
+[
+    {
+        "sequence_length": 25,
+        "repetitions": 5,
+        "average_time_ms": 0.1737,
+        "minimum_time_ms": 0.1688,
+        "maximum_time_ms": 0.1825
+    },
+    {
+        "sequence_length": 50,
+        "repetitions": 5,
+        "average_time_ms": 0.6224,
+        "minimum_time_ms": 0.585,
+        "maximum_time_ms": 0.681
+    },
+    {
+        "sequence_length": 100,
+        "repetitions": 5,
+        "average_time_ms": 2.6727,
+        "minimum_time_ms": 2.2353,
+        "maximum_time_ms": 3.795
+    },
+    {
+        "sequence_length": 200,
+        "repetitions": 5,
+        "average_time_ms": 10.8291,
+        "minimum_time_ms": 9.7108,
+        "maximum_time_ms": 12.912
+    }
+]
