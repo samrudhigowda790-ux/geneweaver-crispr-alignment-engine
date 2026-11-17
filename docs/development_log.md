@@ -116,3 +116,26 @@ Implement a basic DNA alignment scoring module.
 
 ### Status
 DNA scoring module implemented and tested.
+
+## Additional Work – November 17, 2026
+
+### Objective
+Implement DNA sequence chunking with overlap support.
+
+### Work Completed
+- Implemented configurable sequence chunking.
+- Added optional overlapping regions between consecutive chunks.
+- Added validation for invalid chunk sizes and overlap values.
+- Handled sequences shorter than the configured chunk size.
+- Fixed an edge case that generated an unnecessary final chunk.
+
+### Testing
+- Added 10 chunking unit tests.
+- Complete test suite: 34 passed.
+
+### Next Steps
+- Integrate chunking with the CPU alignment pipeline.
+- Prepare chunk processing for larger DNA sequences.
+
+### Status
+Sequence chunking implemented and verified.
