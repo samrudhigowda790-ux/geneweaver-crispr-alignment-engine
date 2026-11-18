@@ -139,3 +139,30 @@ Implement DNA sequence chunking with overlap support.
 
 ### Status
 Sequence chunking implemented and verified.
+
+## Day 7 – November 18, 2026
+
+### Objective
+Develop and verify the FastAPI backend for GeneWeaver.
+
+### Work Completed
+- Integrated FastAPI with the existing CPU alignment module.
+- Created a health-check endpoint.
+- Created a DNA alignment endpoint.
+- Added configurable match, mismatch and gap scoring parameters.
+- Added API input validation and error handling.
+- Created automated API tests.
+- Verified endpoints using Swagger UI.
+
+### Testing
+- Full test suite: 39 passed.
+- Health endpoint returned HTTP 200.
+- Alignment endpoint tested through Swagger UI.
+
+### Next Steps
+- Develop the web frontend.
+- Connect frontend forms to the alignment API.
+- Display alignment results in an interactive dashboard.
+
+### Status
+Initial backend API implemented and tested.

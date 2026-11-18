@@ -4,3 +4,6 @@ pytest
 numba
 dask
 textual
+fastapi
+uvicorn
+httpx
