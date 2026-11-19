@@ -166,3 +166,31 @@ Develop and verify the FastAPI backend for GeneWeaver.
 
 ### Status
 Initial backend API implemented and tested.
+
+## Day 8 – November 19, 2026
+
+### Objective
+Build the initial GeneWeaver full-stack web interface.
+
+### Work Completed
+- Created a responsive frontend using HTML, CSS and JavaScript.
+- Added reference and target DNA sequence input fields.
+- Added configurable match, mismatch and gap scoring.
+- Connected the frontend to the FastAPI alignment endpoint.
+- Displayed alignment scores, mismatch positions and gap counts.
+- Integrated the frontend with the backend through FastAPI static file serving.
+
+### Testing
+- Verified homepage and static asset loading.
+- Tested DNA alignment through the web interface.
+- Confirmed successful API response and displayed alignment results.
+- Executed the full automated test suite.
+
+### Next Steps
+- Add FASTA file upload.
+- Improve alignment visualization.
+- Add GPU alignment support.
+- Prepare application for deployment.
+
+### Status
+Initial full-stack GeneWeaver application running locally.

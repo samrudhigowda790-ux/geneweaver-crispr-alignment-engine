@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeneWeaver | DNA Alignment Engine</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="brand"><span class="logo">G</span> GeneWeaver</div>
+        <span class="status"><span class="dot"></span> Alignment Engine</span>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <p class="eyebrow">COMPUTATIONAL BIOLOGY WORKSPACE</p>
+            <h1>DNA Sequence <span>Alignment</span></h1>
+            <p class="subtitle">Compare DNA sequences, identify mismatches and explore alignment scores.</p>
+        </section>
+
+        <section class="workspace">
+            <div class="section-heading">
+                <h2>Sequence Input</h2>
+                <span>Enter DNA sequences below</span>
+            </div>
+
+            <div class="sequence-grid">
+                <div class="input-card">
+                    <label for="sequenceA">REFERENCE SEQUENCE</label>
+                    <textarea id="sequenceA" placeholder="Enter reference DNA sequence..." spellcheck="false">ATCG</textarea>
+                </div>
+                <div class="input-card">
+                    <label for="sequenceB">TARGET SEQUENCE</label>
+                    <textarea id="sequenceB" placeholder="Enter target DNA sequence..." spellcheck="false">ATGG</textarea>
+                </div>
+            </div>
+
+            <div class="settings">
+                <div>
+                    <label for="match">Match score</label>
+                    <input id="match" type="number" value="2">
+                </div>
+                <div>
+                    <label for="mismatch">Mismatch penalty</label>
+                    <input id="mismatch" type="number" value="-1">
+                </div>
+                <div>
+                    <label for="gap">Gap penalty</label>
+                    <input id="gap" type="number" value="-2">
+                </div>
+            </div>
+
+            <button id="alignButton" onclick="runAlignment()">Run Alignment →</button>
+            <p id="message" class="message"></p>
+        </section>
+
+        <section id="results" class="results hidden">
+            <div class="section-heading">
+                <h2>Alignment Results</h2>
+                <span>CPU global alignment</span>
+            </div>
+
+            <div class="metrics">
+                <div class="metric"><span>ALIGNMENT SCORE</span><strong id="score">-</strong></div>
+                <div class="metric"><span>MISMATCH COUNT</span><strong id="mismatchCount">-</strong></div>
+                <div class="metric"><span>GAP COUNT</span><strong id="gapCount">-</strong></div>
+            </div>
+
+            <div class="alignment-card">
+                <h3>Aligned Sequences</h3>
+                <div class="sequence-output">
+                    <span>Reference</span>
+                    <code id="alignedA"></code>
+                </div>
+                <div class="sequence-output">
+                    <span>Target</span>
+                    <code id="alignedB"></code>
+                </div>
+                <p id="positions"></p>
+            </div>
+        </section>
+
+        <footer>GeneWeaver · Research and educational prototype · Not for clinical use</footer>
+    </main>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

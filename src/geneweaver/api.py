@@ -1,4 +1,8 @@
-﻿from fastapi import FastAPI, HTTPException
+﻿from pathlib import Path
+
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from geneweaver.cpu_aligner import align_sequences
@@ -9,6 +13,19 @@ app = FastAPI(
     description="DNA sequence alignment and scoring API",
     version="1.0.0"
 )
+
+FRONTEND_DIR = Path(__file__).resolve().parents[2] / "frontend"
+
+app.mount(
+    "/static",
+    StaticFiles(directory=str(FRONTEND_DIR)),
+    name="static"
+)
+
+
+@app.get("/", include_in_schema=False)
+def homepage():
+    return FileResponse(FRONTEND_DIR / "index.html")
 
 
 class AlignmentRequest(BaseModel):
