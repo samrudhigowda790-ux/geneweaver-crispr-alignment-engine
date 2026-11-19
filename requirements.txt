@@ -7,3 +7,4 @@ textual
 fastapi
 uvicorn
 httpx
+python-multipart

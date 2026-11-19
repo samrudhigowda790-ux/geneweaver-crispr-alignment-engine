@@ -18,6 +18,48 @@
             <h1>DNA Sequence <span>Alignment</span></h1>
             <p class="subtitle">Compare DNA sequences, identify mismatches and explore alignment scores.</p>
         </section>
+<section class="workspace upload-workspace">
+    <div class="section-heading">
+        <h2>Upload FASTA File</h2>
+        <span>Import DNA sequences</span>
+    </div>
+
+    <div class="upload-area">
+        <input
+            type="file"
+            id="fastaFile"
+            accept=".fasta,.fa,.fna"
+        >
+        <button id="uploadButton" onclick="uploadFasta()">
+            Upload and Parse
+        </button>
+    </div>
+
+    <p id="uploadMessage" class="message"></p>
+
+    <div id="fastaPreview" class="hidden">
+        <h3>Parsed Sequences</h3>
+        <p id="sequenceCount"></p>
+
+        <div class="sequence-grid">
+            <div>
+                <label for="referenceSelect">REFERENCE</label>
+                <select id="referenceSelect"></select>
+            </div>
+
+            <div>
+                <label for="targetSelect">TARGET</label>
+                <select id="targetSelect"></select>
+            </div>
+        </div>
+
+        <button id="useSequencesButton" onclick="useSelectedSequences()">
+            Use Selected Sequences
+        </button>
+
+        <div id="sequenceList"></div>
+    </div>
+</section>
 
         <section class="workspace">
             <div class="section-heading">

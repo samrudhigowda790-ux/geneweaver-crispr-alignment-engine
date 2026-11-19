@@ -40,3 +40,135 @@
         button.disabled = false;
     }
 }
+
+let uploadedSequences = [];
+
+async function uploadFasta() {
+    const fileInput = document.getElementById("fastaFile");
+    const button = document.getElementById("uploadButton");
+    const message = document.getElementById("uploadMessage");
+    const preview = document.getElementById("fastaPreview");
+
+    const file = fileInput.files[0];
+
+    if (!file) {
+        message.textContent = "Please select a FASTA file first.";
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    button.disabled = true;
+    message.textContent = "Uploading and parsing...";
+    preview.classList.add("hidden");
+
+    try {
+        const response = await fetch("/api/fasta", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.detail || "FASTA upload failed");
+        }
+
+        uploadedSequences = data.sequences;
+
+        populateSequenceSelectors();
+        displaySequencePreview();
+
+        document.getElementById("sequenceCount").textContent =
+            data.sequence_count + " sequence(s) found in " + data.filename;
+
+        preview.classList.remove("hidden");
+        message.textContent = "FASTA file parsed successfully.";
+
+    } catch (error) {
+        uploadedSequences = [];
+        message.textContent = error.message;
+    } finally {
+        button.disabled = false;
+    }
+}
+
+
+function populateSequenceSelectors() {
+    const referenceSelect = document.getElementById("referenceSelect");
+    const targetSelect = document.getElementById("targetSelect");
+
+    referenceSelect.replaceChildren();
+    targetSelect.replaceChildren();
+
+    uploadedSequences.forEach((record, index) => {
+        const referenceOption = document.createElement("option");
+        referenceOption.value = index;
+        referenceOption.textContent = record.id;
+        referenceSelect.appendChild(referenceOption);
+
+        const targetOption = document.createElement("option");
+        targetOption.value = index;
+        targetOption.textContent = record.id;
+        targetSelect.appendChild(targetOption);
+    });
+
+    if (uploadedSequences.length > 1) {
+        targetSelect.value = "1";
+    }
+}
+
+
+function displaySequencePreview() {
+    const sequenceList = document.getElementById("sequenceList");
+    sequenceList.replaceChildren();
+
+    uploadedSequences.forEach((record) => {
+        const card = document.createElement("div");
+        card.className = "alignment-card";
+
+        const heading = document.createElement("h3");
+        heading.textContent = record.id;
+
+        const description = document.createElement("p");
+        description.textContent = record.description;
+
+        const sequence = document.createElement("code");
+        sequence.textContent = record.sequence;
+
+        card.append(heading, description, sequence);
+        sequenceList.appendChild(card);
+    });
+}
+
+
+function useSelectedSequences() {
+    const referenceIndex = document.getElementById("referenceSelect").value;
+    const targetIndex = document.getElementById("targetSelect").value;
+    const message = document.getElementById("uploadMessage");
+
+    if (uploadedSequences.length < 2) {
+        message.textContent = "Upload at least two sequences to perform alignment.";
+        return;
+    }
+
+    if (referenceIndex === targetIndex) {
+        message.textContent = "Please select two different sequences.";
+        return;
+    }
+
+    document.getElementById("sequenceA").value =
+        uploadedSequences[Number(referenceIndex)].sequence;
+
+    document.getElementById("sequenceB").value =
+        uploadedSequences[Number(targetIndex)].sequence;
+
+    message.textContent = "Selected sequences added to the alignment workspace.";
+
+    document.querySelector(".workspace:not(.upload-workspace)").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
+

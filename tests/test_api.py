@@ -48,3 +48,74 @@ def test_empty_sequence():
     )
 
     assert response.status_code == 422
+
+def test_fasta_upload_single_sequence():
+    response = client.post(
+        "/api/fasta",
+        files={
+            "file": (
+                "sample.fasta",
+                b">sequence_1\nATCGATCG\n",
+                "text/plain"
+            )
+        }
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["sequence_count"] == 1
+    assert data["sequences"][0]["id"] == "sequence_1"
+    assert data["sequences"][0]["sequence"] == "ATCGATCG"
+
+
+def test_fasta_upload_multiple_sequences():
+    response = client.post(
+        "/api/fasta",
+        files={
+            "file": (
+                "multiple.fasta",
+                b">seq1\nATCG\n>seq2\nGCTA\n",
+                "text/plain"
+            )
+        }
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["sequence_count"] == 2
+    assert data["sequences"][0]["sequence"] == "ATCG"
+    assert data["sequences"][1]["sequence"] == "GCTA"
+
+
+def test_fasta_upload_unsupported_extension():
+    response = client.post(
+        "/api/fasta",
+        files={
+            "file": ("sample.txt", b">seq1\nATCG\n", "text/plain")
+        }
+    )
+
+    assert response.status_code == 400
+
+
+def test_fasta_upload_invalid_dna():
+    response = client.post(
+        "/api/fasta",
+        files={
+            "file": ("invalid.fasta", b">seq1\nATCX\n", "text/plain")
+        }
+    )
+
+    assert response.status_code == 422
+
+
+def test_fasta_upload_empty_file():
+    response = client.post(
+        "/api/fasta",
+        files={
+            "file": ("empty.fasta", b"", "text/plain")
+        }
+    )
+
+    assert response.status_code == 400
+

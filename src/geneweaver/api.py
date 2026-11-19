@@ -4,6 +4,9 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
+from fastapi import UploadFile, File
+from geneweaver.fasta_parser import parse_fasta
+import tempfile
 
 from geneweaver.cpu_aligner import align_sequences
 from geneweaver.scoring import score_alignment
@@ -74,3 +77,54 @@ def perform_alignment(request: AlignmentRequest):
 
     except ValueError as error:
         raise HTTPException(status_code=422, detail=str(error))
+@app.post("/api/fasta")
+async def upload_fasta(file: UploadFile = File(...)):
+    allowed_extensions = {".fasta", ".fa", ".fna"}
+
+    extension = Path(file.filename or "").suffix.lower()
+
+    if extension not in allowed_extensions:
+        raise HTTPException(
+            status_code=400,
+            detail="Only .fasta, .fa, and .fna files are supported"
+        )
+
+    content = await file.read()
+
+    if not content:
+        raise HTTPException(
+            status_code=400,
+            detail="Uploaded FASTA file is empty"
+        )
+
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="wb",
+            suffix=extension,
+            delete=False
+        ) as temp_file:
+            temp_file.write(content)
+            temp_path = Path(temp_file.name)
+
+        try:
+            records = parse_fasta(temp_path)
+        finally:
+            temp_path.unlink(missing_ok=True)
+
+        return {
+            "filename": file.filename,
+            "sequence_count": len(records),
+            "sequences": [
+                {
+                    "id": record.id,
+                    "description": record.description,
+                    "sequence": record.sequence
+                }
+                for record in records
+            ]
+        }
+
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error))
+    finally:
+        await file.close()
