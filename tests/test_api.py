@@ -119,3 +119,20 @@ def test_fasta_upload_empty_file():
 
     assert response.status_code == 400
 
+def test_fasta_upload_exceeds_size_limit():
+    oversized_content = b">seq1\n" + b"A" * (5 * 1024 * 1024)
+
+    response = client.post(
+        "/api/fasta",
+        files={
+            "file": (
+                "large.fasta",
+                oversized_content,
+                "text/plain"
+            )
+        }
+    )
+
+    assert response.status_code == 413
+    assert "exceeds the maximum allowed size" in response.json()["detail"]
+

@@ -77,27 +77,36 @@ def perform_alignment(request: AlignmentRequest):
 
     except ValueError as error:
         raise HTTPException(status_code=422, detail=str(error))
+MAX_FASTA_SIZE = 5 * 1024 * 1024  # 5 MB
+
 @app.post("/api/fasta")
 async def upload_fasta(file: UploadFile = File(...)):
     allowed_extensions = {".fasta", ".fa", ".fna"}
 
     extension = Path(file.filename or "").suffix.lower()
 
-    if extension not in allowed_extensions:
-        raise HTTPException(
-            status_code=400,
-            detail="Only .fasta, .fa, and .fna files are supported"
-        )
-
-    content = await file.read()
-
-    if not content:
-        raise HTTPException(
-            status_code=400,
-            detail="Uploaded FASTA file is empty"
-        )
-
     try:
+        if extension not in allowed_extensions:
+            raise HTTPException(
+                status_code=400,
+                detail="Only .fasta, .fa, and .fna files are supported"
+            )
+
+        # Read only 1 byte beyond the limit to detect oversized files.
+        content = await file.read(MAX_FASTA_SIZE + 1)
+
+        if len(content) > MAX_FASTA_SIZE:
+            raise HTTPException(
+                status_code=413,
+                detail="FASTA file exceeds the maximum allowed size of 5 MB"
+            )
+
+        if not content:
+            raise HTTPException(
+                status_code=400,
+                detail="Uploaded FASTA file is empty"
+            )
+
         with tempfile.NamedTemporaryFile(
             mode="wb",
             suffix=extension,
