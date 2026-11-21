@@ -1,6 +1,6 @@
 ﻿# GeneWeaver Development Log
 
-## Day 1 â€“ November 12, 2026
+## Day 1 - November 12, 2026
 
 ### Objective
 Initialize the individual GeneWeaver project.
@@ -21,7 +21,7 @@ Initialize the individual GeneWeaver project.
 
 ### Status
 Initial project setup completed.
-## Day 2 â€“ November 14, 2026
+## Day 2 - November 14, 2026
 
 ### Objective
 Implement FASTA parsing and DNA sequence validation.
@@ -47,7 +47,7 @@ Implement FASTA parsing and DNA sequence validation.
 ### Status
 FASTA parser implementation and focused unit testing completed.
 
-## Day 3 â€“ November 15, 2026
+## Day 3 - November 15, 2026
 
 ### Objective
 Develop the initial CPU-based DNA sequence alignment engine.
@@ -74,7 +74,7 @@ Develop the initial CPU-based DNA sequence alignment engine.
 ### Status
 Initial CPU alignment implementation completed and focused tests passed.
 
-## Day 4 â€“ November 16, 2026
+## Day 4 - November 16, 2026
 
 ### Objective
 Establish an initial CPU sequence alignment performance baseline.
@@ -95,7 +95,7 @@ Establish an initial CPU sequence alignment performance baseline.
 - Explore memory usage.
 - Prepare the CPU baseline for future GPU comparison.
 
-## Day 5 â€“ November 17, 2026
+## Day 5 - November 17, 2026
 
 ### Objective
 Implement a basic DNA alignment scoring module.
@@ -117,7 +117,7 @@ Implement a basic DNA alignment scoring module.
 ### Status
 DNA scoring module implemented and tested.
 
-## Additional Work â€“ November 17, 2026
+## Additional Work - November 17, 2026
 
 ### Objective
 Implement DNA sequence chunking with overlap support.
@@ -140,7 +140,7 @@ Implement DNA sequence chunking with overlap support.
 ### Status
 Sequence chunking implemented and verified.
 
-## Day 7 â€“ November 18, 2026
+## Day 7 - November 18, 2026
 
 ### Objective
 Develop and verify the FastAPI backend for GeneWeaver.
@@ -167,7 +167,7 @@ Develop and verify the FastAPI backend for GeneWeaver.
 ### Status
 Initial backend API implemented and tested.
 
-## Day 8 â€“ November 19, 2026
+## Day 8 - November 19, 2026
 
 ### Objective
 Build the initial GeneWeaver full-stack web interface.
@@ -195,7 +195,7 @@ Build the initial GeneWeaver full-stack web interface.
 ### Status
 Initial full-stack GeneWeaver application running locally.
 
-## Day 9 â€“ November 20, 2026
+## Day 9 - November 20, 2026
 
 ### Objective
 Improve FASTA upload validation and protect the API from oversized file uploads.
@@ -220,3 +220,33 @@ Improve FASTA upload validation and protect the API from oversized file uploads.
 
 ### Status
 FASTA upload size validation implemented and verified successfully.
+
+## November 22, 2026
+
+### Objective
+Implement PAM recognition for SpCas9 and support detection on both DNA strands.
+
+### Work Completed
+- Implemented PAM site detection using the NGG pattern.
+- Added wildcard matching where N represents any standard DNA base.
+- Added reverse-complement generation.
+- Implemented PAM detection on forward and reverse DNA strands.
+- Added strand identification (+ and -) to PAM results.
+- Added original-sequence coordinate reporting for reverse-strand matches.
+- Created automated tests for PAM recognition and reverse-strand functionality.
+
+### Testing
+- PAM recognition test suite: 12 passed.
+- Complete project test suite: 57 passed.
+- No test failures.
+- One Starlette/httpx deprecation warning observed.
+
+### Next Steps
+- Validate reverse-strand coordinate mapping with additional examples.
+- Integrate PAM recognition into the FastAPI backend.
+- Explore guide RNA and protospacer identification.
+- Develop mismatch-based candidate target scoring.
+- Continue GPU alignment development.
+
+### Status
+Basic SpCas9 NGG PAM recognition on both DNA strands implemented and verified with automated tests. This is an initial PAM scanning feature, not a complete CRISPR off-target analysis system.
