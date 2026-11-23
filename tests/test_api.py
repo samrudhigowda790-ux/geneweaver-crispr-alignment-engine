@@ -136,3 +136,62 @@ def test_fasta_upload_exceeds_size_limit():
     assert response.status_code == 413
     assert "exceeds the maximum allowed size" in response.json()["detail"]
 
+
+def test_pam_endpoint_forward_strand():
+    response = client.post(
+        "/api/pam",
+        json={"sequence": "AGG"}
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["site_count"] == 1
+    assert data["pam_sites"][0] == {
+        "position": 1,
+        "pam_sequence": "AGG",
+        "strand": "+"
+    }
+
+
+def test_pam_endpoint_reverse_strand():
+    response = client.post(
+        "/api/pam",
+        json={"sequence": "CCT"}
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["site_count"] == 1
+    assert data["pam_sites"][0] == {
+        "position": 1,
+        "pam_sequence": "AGG",
+        "strand": "-"
+    }
+
+
+def test_pam_endpoint_no_sites():
+    response = client.post(
+        "/api/pam",
+        json={"sequence": "ATCG"}
+    )
+
+    assert response.status_code == 200
+    assert response.json()["site_count"] == 0
+
+
+def test_pam_endpoint_invalid_sequence():
+    response = client.post(
+        "/api/pam",
+        json={"sequence": "ATGXGG"}
+    )
+
+    assert response.status_code == 422
+
+
+def test_pam_endpoint_invalid_pattern():
+    response = client.post(
+        "/api/pam",
+        json={"sequence": "ATCG", "pam_pattern": "XGG"}
+    )
+
+    assert response.status_code == 422

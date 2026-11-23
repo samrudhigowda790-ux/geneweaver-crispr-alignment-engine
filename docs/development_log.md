@@ -250,3 +250,34 @@ Implement PAM recognition for SpCas9 and support detection on both DNA strands.
 
 ### Status
 Basic SpCas9 NGG PAM recognition on both DNA strands implemented and verified with automated tests. This is an initial PAM scanning feature, not a complete CRISPR off-target analysis system.
+
+## November 23, 2026
+
+### Objective
+Integrate PAM recognition into the GeneWeaver FastAPI backend and verify the API functionality.
+
+### Work Completed
+- Added a new POST /api/pam endpoint.
+- Integrated the existing PAM recognition module with the FastAPI backend.
+- Added a request model supporting DNA sequence and configurable PAM pattern.
+- Implemented API responses containing the input sequence, PAM pattern, detected site count and PAM locations.
+- Added API tests for forward-strand and reverse-strand PAM detection.
+- Added tests for sequences without PAM sites, invalid DNA sequences and invalid PAM patterns.
+- Corrected the API request model structure to keep alignment and PAM requests separate.
+
+### Testing
+- Focused API test suite: 16 passed.
+- Complete project test suite: 62 passed in 0.66 seconds.
+- Verified forward-strand and reverse-strand API responses.
+- Verified invalid input handling.
+- One Starlette/httpx deprecation warning observed.
+
+### Next Steps
+- Validate reverse-strand coordinate mapping with additional examples.
+- Explore guide RNA and protospacer identification.
+- Develop mismatch-based candidate target scoring.
+- Continue GPU alignment development.
+- Explore integration of PAM results with sequence alignment.
+
+### Status
+PAM recognition successfully integrated into the FastAPI backend and verified through automated API and project-wide tests. The current implementation provides basic PAM scanning and does not yet constitute a complete CRISPR off-target analysis system.

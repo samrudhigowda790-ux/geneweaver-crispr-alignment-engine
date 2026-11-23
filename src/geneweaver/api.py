@@ -1,4 +1,4 @@
-﻿from pathlib import Path
+from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
@@ -10,6 +10,8 @@ import tempfile
 
 from geneweaver.cpu_aligner import align_sequences
 from geneweaver.scoring import score_alignment
+
+from geneweaver.pam_recognition import find_pam_sites_both_strands
 
 app = FastAPI(
     title="GeneWeaver API",
@@ -30,7 +32,6 @@ app.mount(
 def homepage():
     return FileResponse(FRONTEND_DIR / "index.html")
 
-
 class AlignmentRequest(BaseModel):
     sequence_a: str = Field(min_length=1)
     sequence_b: str = Field(min_length=1)
@@ -38,6 +39,9 @@ class AlignmentRequest(BaseModel):
     mismatch_penalty: int = -1
     gap_penalty: int = -2
 
+class PamRequest(BaseModel):
+    sequence: str = Field(min_length=1)
+    pam_pattern: str = "NGG"
 
 @app.get("/api/health")
 def health_check():
@@ -46,6 +50,23 @@ def health_check():
         "application": "GeneWeaver"
     }
 
+@app.post("/api/pam")
+def detect_pam_sites(request: PamRequest):
+    try:
+        matches = find_pam_sites_both_strands(
+            request.sequence,
+            request.pam_pattern
+        )
+
+        return {
+            "sequence": request.sequence.upper(),
+            "pam_pattern": request.pam_pattern.upper(),
+            "site_count": len(matches),
+            "pam_sites": matches
+        }
+
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error))
 
 @app.post("/api/align")
 def perform_alignment(request: AlignmentRequest):
