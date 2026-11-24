@@ -4,6 +4,7 @@ from geneweaver.pam_recognition import (
     find_pam_sites,
     reverse_complement,
     find_pam_sites_both_strands,
+    find_protospacers,
 )
 
 def test_finds_spcas9_pam():
@@ -82,4 +83,49 @@ def test_finds_forward_strand_pam():
             "strand": "+"
         }
     ]
-    
+
+def test_finds_forward_strand_protospacer():
+    sequence = "A" * 20 + "AGG"
+
+    result = find_protospacers(sequence)
+
+    assert len(result) == 1
+    assert result[0]["protospacer_sequence"] == "A" * 20
+    assert result[0]["protospacer_start"] == 1
+    assert result[0]["protospacer_end"] == 20
+    assert result[0]["pam_position"] == 21
+    assert result[0]["strand"] == "+"
+
+
+def test_finds_reverse_strand_protospacer():
+    sequence = "CCT" + "A" * 20
+
+    result = find_protospacers(sequence)
+
+    assert len(result) == 1
+    assert result[0]["protospacer_sequence"] == "T" * 20
+    assert result[0]["protospacer_start"] == 4
+    assert result[0]["protospacer_end"] == 23
+    assert result[0]["pam_position"] == 1
+    assert result[0]["strand"] == "-"
+
+
+def test_skips_protospacer_with_insufficient_bases():
+    result = find_protospacers("A" * 10 + "AGG")
+
+    assert result == []
+
+
+def test_supports_custom_protospacer_length():
+    result = find_protospacers("AAAATGG", protospacer_length=4)
+
+    assert len(result) == 1
+    assert result[0]["protospacer_sequence"] == "AAAA"
+    assert result[0]["protospacer_start"] == 1
+    assert result[0]["protospacer_end"] == 4
+
+
+@pytest.mark.parametrize("length", [0, -1, True, 2.5])
+def test_rejects_invalid_protospacer_length(length):
+    with pytest.raises(ValueError):
+        find_protospacers("A" * 20 + "AGG", protospacer_length=length)

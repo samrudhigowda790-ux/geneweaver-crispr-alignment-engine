@@ -281,3 +281,34 @@ Integrate PAM recognition into the GeneWeaver FastAPI backend and verify the API
 
 ### Status
 PAM recognition successfully integrated into the FastAPI backend and verified through automated API and project-wide tests. The current implementation provides basic PAM scanning and does not yet constitute a complete CRISPR off-target analysis system.
+
+
+## November 24, 2026
+
+### Objective
+Implement protospacer identification adjacent to PAM sites on both DNA strands.
+
+### Work Completed
+- Added `find_protospacers()` to the PAM recognition module.
+- Implemented protospacer extraction for forward and reverse DNA strands.
+- Added reverse-complement handling for reverse-strand protospacers.
+- Added 1-based inclusive coordinates for protospacer locations in the original DNA sequence.
+- Added support for configurable protospacer lengths.
+- Added validation for invalid protospacer lengths.
+- Added handling for PAM sites without enough adjacent bases for a complete protospacer.
+- Added automated tests for forward-strand and reverse-strand extraction, custom lengths, insufficient sequence length and invalid inputs.
+
+### Testing
+- Focused PAM recognition test suite: 20 passed.
+- Complete project test suite: 70 passed in 1.15 seconds.
+- No test failures.
+- One Starlette/httpx deprecation warning observed.
+
+### Next Steps
+- Integrate protospacer identification into the FastAPI backend.
+- Develop mismatch-based candidate target scoring.
+- Connect PAM and protospacer results with sequence alignment.
+- Continue GPU alignment development.
+
+### Status
+Protospacer identification is implemented and verified on both DNA strands with automated tests. This is a foundational sequence-analysis feature and is not a complete CRISPR off-target prediction system.

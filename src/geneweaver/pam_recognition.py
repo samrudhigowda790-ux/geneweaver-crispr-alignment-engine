@@ -90,29 +90,62 @@ def find_pam_sites_both_strands(sequence, pam_pattern="NGG"):
         })
 
     return sorted(results, key=lambda item: item["position"])
-def test_reverse_complement():
-    assert reverse_complement("AGTC") == "GACT"
 
 
-def test_finds_reverse_strand_pam():
-    result = find_pam_sites_both_strands("CCT")
+def find_protospacers(sequence, pam_pattern="NGG", protospacer_length=20):
+    """
+    Identify protospacer sequences adjacent to PAM sites
+    on both DNA strands.
 
-    assert result == [
-        {
-            "position": 1,
-            "pam_sequence": "AGG",
-            "strand": "-"
-        }
-    ]
+    Coordinates are 1-based and inclusive, mapped to the
+    original input sequence.
+    """
 
+    sequence = sequence.upper()
 
-def test_finds_forward_strand_pam():
-    result = find_pam_sites_both_strands("AGG")
+    if not sequence:
+        raise ValueError("DNA sequence must not be empty")
 
-    assert result == [
-        {
-            "position": 1,
-            "pam_sequence": "AGG",
-            "strand": "+"
-        }
-    ]
+    if (
+        not isinstance(protospacer_length, int)
+        or isinstance(protospacer_length, bool)
+        or protospacer_length <= 0
+    ):
+        raise ValueError("Protospacer length must be a positive integer")
+
+    pam_sites = find_pam_sites_both_strands(sequence, pam_pattern)
+    results = []
+
+    pam_length = len(pam_pattern)
+
+    for site in pam_sites:
+        pam_start = site["position"] - 1
+
+        if site["strand"] == "+":
+            start = pam_start - protospacer_length
+            end = pam_start
+
+            if start < 0:
+                continue
+
+            protospacer = sequence[start:end]
+
+        else:
+            start = pam_start + pam_length
+            end = start + protospacer_length
+
+            if end > len(sequence):
+                continue
+
+            protospacer = reverse_complement(sequence[start:end])
+
+        results.append({
+            "protospacer_sequence": protospacer,
+            "protospacer_start": start + 1,
+            "protospacer_end": end,
+            "pam_position": site["position"],
+            "pam_sequence": site["pam_sequence"],
+            "strand": site["strand"]
+        })
+
+    return results
