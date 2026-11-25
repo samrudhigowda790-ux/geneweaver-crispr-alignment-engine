@@ -312,27 +312,27 @@ Implement protospacer identification adjacent to PAM sites on both DNA strands.
 
 ### Status
 Protospacer identification is implemented and verified on both DNA strands with automated tests. This is a foundational sequence-analysis feature and is not a complete CRISPR off-target prediction system.
-
-
-## November 25, 2026
+## Day 16 – November 25, 2026
 
 ### Objective
-Plan the integration of protospacer identification into the GeneWeaver FastAPI backend.
+Integrate protospacer identification into the FastAPI backend.
 
-### Planned Work
-- Add a dedicated POST /api/protospacers endpoint.
-- Create a request model supporting DNA sequence, PAM pattern and configurable protospacer length.
-- Integrate the existing `find_protospacers()` function with the API.
-- Return protospacer sequences, PAM details, strand information and original DNA coordinates.
-- Add API tests for forward-strand and reverse-strand results.
-- Test invalid sequences, invalid lengths and sequences without valid protospacers.
-- Verify the endpoint through the FastAPI test client.
+### Work Completed
+- Added ProtospacerRequest model with sequence, PAM pattern, and protospacer length.
+- Implemented POST /api/protospacers endpoint.
+- Integrated the existing protospacer identification function.
+- Added API tests for forward and reverse strands, custom lengths, missing matches, and invalid inputs.
+- Returned protospacer sequences, strand information, and coordinates through the API.
+
+### Testing
+- API tests: 23 passed.
+- Full test suite: 77 passed.
+- One existing Starlette/httpx deprecation warning.
+
+### Outcome
+Protospacer identification is now accessible through the FastAPI backend.
 
 ### Next Steps
-- Complete the protospacer API request model and endpoint.
-- Add automated API tests.
-- Run the complete project test suite.
-- Update project documentation after implementation.
-
-### Status
-Protospacer identification is already implemented and tested in the core PAM recognition module. FastAPI integration is planned but not yet completed.
+- Review API integration.
+- Connect protospacer analysis to the frontend.
+- Continue GPU alignment development and benchmarking.

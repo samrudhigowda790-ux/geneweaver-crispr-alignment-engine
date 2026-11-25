@@ -195,3 +195,85 @@ def test_pam_endpoint_invalid_pattern():
     )
 
     assert response.status_code == 422
+
+def test_protospacer_endpoint_forward_strand():
+    response = client.post(
+        "/api/protospacers",
+        json={"sequence": "A" * 20 + "AGG"}
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["site_count"] == 1
+    assert data["protospacers"][0]["protospacer_sequence"] == "A" * 20
+    assert data["protospacers"][0]["strand"] == "+"
+
+
+def test_protospacer_endpoint_reverse_strand():
+    response = client.post(
+        "/api/protospacers",
+        json={"sequence": "CCT" + "A" * 20}
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["site_count"] == 1
+    assert data["protospacers"][0]["protospacer_sequence"] == "T" * 20
+    assert data["protospacers"][0]["strand"] == "-"
+
+
+def test_protospacer_endpoint_no_complete_match():
+    response = client.post(
+        "/api/protospacers",
+        json={"sequence": "A" * 10 + "AGG"}
+    )
+
+    assert response.status_code == 200
+    assert response.json()["site_count"] == 0
+
+
+def test_protospacer_endpoint_custom_length():
+    response = client.post(
+        "/api/protospacers",
+        json={
+            "sequence": "AAAATGG",
+            "protospacer_length": 4
+        }
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["protospacers"][0]["protospacer_sequence"] == "AAAA"
+
+
+def test_protospacer_endpoint_invalid_sequence():
+    response = client.post(
+        "/api/protospacers",
+        json={"sequence": "ATGX"}
+    )
+
+    assert response.status_code == 422
+
+
+def test_protospacer_endpoint_invalid_length():
+    response = client.post(
+        "/api/protospacers",
+        json={
+            "sequence": "A" * 20 + "AGG",
+            "protospacer_length": 0
+        }
+    )
+
+    assert response.status_code == 422
+
+
+def test_protospacer_endpoint_invalid_pattern():
+    response = client.post(
+        "/api/protospacers",
+        json={
+            "sequence": "A" * 20 + "AGG",
+            "pam_pattern": "XGG"
+        }
+    )
+
+    assert response.status_code == 422

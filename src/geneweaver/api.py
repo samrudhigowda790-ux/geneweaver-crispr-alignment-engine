@@ -1,4 +1,4 @@
-from pathlib import Path
+﻿from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
@@ -11,7 +11,10 @@ import tempfile
 from geneweaver.cpu_aligner import align_sequences
 from geneweaver.scoring import score_alignment
 
-from geneweaver.pam_recognition import find_pam_sites_both_strands
+from geneweaver.pam_recognition import (
+    find_pam_sites_both_strands,
+    find_protospacers,
+)
 
 app = FastAPI(
     title="GeneWeaver API",
@@ -43,6 +46,11 @@ class PamRequest(BaseModel):
     sequence: str = Field(min_length=1)
     pam_pattern: str = "NGG"
 
+class ProtospacerRequest(BaseModel):
+    sequence: str = Field(min_length=1)
+    pam_pattern: str = "NGG"
+    protospacer_length: int = Field(default=20, gt=0)
+
 @app.get("/api/health")
 def health_check():
     return {
@@ -68,6 +76,26 @@ def detect_pam_sites(request: PamRequest):
     except ValueError as error:
         raise HTTPException(status_code=422, detail=str(error))
 
+@app.post("/api/protospacers")
+def detect_protospacers(request: ProtospacerRequest):
+    try:
+        matches = find_protospacers(
+            request.sequence,
+            pam_pattern=request.pam_pattern,
+            protospacer_length=request.protospacer_length
+        )
+
+        return {
+            "sequence": request.sequence.upper(),
+            "pam_pattern": request.pam_pattern.upper(),
+            "protospacer_length": request.protospacer_length,
+            "site_count": len(matches),
+            "protospacers": matches
+        }
+
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error))
+    
 @app.post("/api/align")
 def perform_alignment(request: AlignmentRequest):
     try:
