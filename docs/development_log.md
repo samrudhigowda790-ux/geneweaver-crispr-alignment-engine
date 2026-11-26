@@ -1,4 +1,4 @@
-﻿# GeneWeaver Development Log
+# GeneWeaver Development Log
 
 ## Day 1 - November 12, 2026
 
@@ -336,3 +336,41 @@ Protospacer identification is now accessible through the FastAPI backend.
 - Review API integration.
 - Connect protospacer analysis to the frontend.
 - Continue GPU alignment development and benchmarking.
+## Day 17 – November 26, 2026
+
+### Objective
+Implement Dask-based batch scheduling for independent DNA sequence alignment tasks.
+
+### Work Completed
+- Implemented `align_batch()` in `src/geneweaver/scheduler.py`.
+- Integrated Dask `delayed` tasks with the existing CPU alignment function.
+- Enabled threaded scheduling for independent sequence alignment tasks.
+- Preserved the input order of alignment results.
+- Added support for custom match scores, mismatch penalties and gap penalties.
+- Added configurable worker count through `num_workers`.
+- Added input validation for sequence pairs.
+- Added automated tests covering batch results, CPU alignment consistency, input order, custom scoring, empty batches, invalid inputs and multiple workers.
+
+### Testing
+- Dask scheduler test suite: 8 passed.
+- Focused scheduler and CPU aligner tests: 16 passed.
+- Complete project test suite: 85 passed in 2.42 seconds.
+- No test failures.
+- One existing Starlette/httpx deprecation warning observed.
+
+### Outcome
+Dask-based batch scheduling is implemented and verified. Multiple independent sequence pairs can now be submitted through the scheduler, which reuses the existing CPU alignment implementation.
+
+Threaded scheduling is implemented, but performance improvement has not yet been established through benchmarking.
+
+### Git
+- Commit: `b2e2e52`
+- Commit message: `feat: add Dask batch alignment scheduler`
+- Successfully pushed to `origin/main`.
+
+### Next Steps
+- Continue GPU alignment development using a safe approach that does not require changing Windows security settings.
+- Investigate CPU and GPU execution options.
+- Connect PAM and protospacer analysis to the frontend.
+- Develop performance benchmarks.
+- Continue dashboard and workflow development.

@@ -37,10 +37,29 @@ The project aims to develop a computational engine that processes FASTA genomic 
 
 ## Development Status
 
-**Current phase:** Project initialization and architecture setup.
+**Current phase:** Core sequence analysis and batch scheduling development.
 
-Implementation, testing and performance benchmarking will be documented as development progresses.
+### Implemented
+- FASTA sequence parsing and upload API.
+- Needleman–Wunsch CPU sequence alignment.
+- Sequence chunking with configurable overlap.
+- Biological alignment scoring.
+- PAM recognition on forward and reverse DNA strands.
+- Protospacer identification on both DNA strands.
+- FastAPI endpoints for alignment, FASTA upload, PAM recognition and protospacer identification.
+- Dask-based batch scheduling for independent sequence alignment tasks.
 
-## Disclaimer
+### Testing
+- Automated project test suite: 85 passed.
+- Dask scheduler tests: 8 passed.
+- No test failures in the latest full test run.
 
-GeneWeaver is an educational computational biology prototype. Its output is not intended for clinical or diagnostic use.
+### In Progress
+- GPU alignment implementation and verification.
+- Frontend integration for PAM and protospacer analysis.
+- Performance benchmarking.
+- Further dashboard and workflow development.
+
+GPU execution and performance improvements have not yet been verified.
+
+Development progress and implementation details are maintained in `docs/development_log.md`.
