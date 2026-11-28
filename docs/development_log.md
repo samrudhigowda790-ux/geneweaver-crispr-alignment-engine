@@ -374,3 +374,40 @@ Threaded scheduling is implemented, but performance improvement has not yet been
 - Connect PAM and protospacer analysis to the frontend.
 - Develop performance benchmarks.
 - Continue dashboard and workflow development.
+
+## Day 18 – November 28, 2026
+
+### Objective
+Connect the existing PAM site detection API to the GeneWeaver frontend.
+
+### Work Completed
+- Added a PAM Site Detection section to `frontend/index.html`.
+- Added DNA sequence input and a configurable PAM pattern field.
+- Added a JavaScript function `scanPamSites()` in `frontend/app.js`.
+- Connected the frontend to the existing `POST /api/pam` endpoint.
+- Added request handling, error handling and PAM detection result display.
+- Displayed the detected PAM site count and site details.
+- Reused existing CSS classes without requiring additional styling changes.
+
+### Testing
+- Started the FastAPI application successfully using Uvicorn with `--app-dir src`.
+- Verified that the frontend homepage, CSS and JavaScript loaded successfully.
+- Manually tested PAM detection with sequence `ATCGATCGAGG` and pattern `NGG`.
+- Successfully detected one PAM site: `AGG`, position 9, forward strand (`+`).
+- Complete project test suite: 85 passed in 0.67 seconds.
+- One existing Starlette/httpx deprecation warning observed.
+- No test failures.
+
+### Outcome
+PAM site detection is now accessible through the GeneWeaver frontend. Users can enter a DNA sequence, specify a PAM pattern and view detected PAM sites from both-strand API analysis.
+
+### Git
+- Frontend changes are ready for commit.
+- Commit and push: pending.
+
+### Next Steps
+- Connect protospacer identification to the frontend.
+- Improve PAM detection result presentation.
+- Continue GPU alignment development using a safe approach that does not require changing Windows security settings.
+- Develop performance benchmarks.
+- Continue dashboard and workflow development.

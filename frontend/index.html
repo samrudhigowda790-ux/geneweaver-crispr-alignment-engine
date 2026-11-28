@@ -61,6 +61,38 @@
     </div>
 </section>
 
+
+<section class="workspace">
+    <div class="section-heading">
+        <h2>PAM Site Detection</h2>
+        <span>Scan both DNA strands</span>
+    </div>
+
+    <label for="pamSequence">DNA SEQUENCE</label>
+    <textarea id="pamSequence"
+        placeholder="Enter DNA sequence..."
+        spellcheck="false"></textarea>
+
+    <div class="settings">
+        <div>
+            <label for="pamPattern">PAM Pattern</label>
+            <input id="pamPattern" type="text" value="NGG">
+        </div>
+    </div>
+
+    <button id="pamButton" onclick="scanPamSites()">
+        Detect PAM Sites
+    </button>
+
+    <p id="pamMessage" class="message"></p>
+
+    <div id="pamResults" class="alignment-card hidden">
+        <h3>PAM Detection Results</h3>
+        <p id="pamCount"></p>
+        <pre id="pamOutput"></pre>
+    </div>
+</section>
+
         <section class="workspace">
             <div class="section-heading">
                 <h2>Sequence Input</h2>

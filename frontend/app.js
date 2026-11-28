@@ -172,3 +172,52 @@ function useSelectedSequences() {
     });
 }
 
+
+async function scanPamSites() {
+    const sequence = document.getElementById("pamSequence").value.trim();
+    const pamPattern = document.getElementById("pamPattern").value.trim();
+
+    const message = document.getElementById("pamMessage");
+    const results = document.getElementById("pamResults");
+    const count = document.getElementById("pamCount");
+    const output = document.getElementById("pamOutput");
+
+    results.classList.add("hidden");
+    output.textContent = "";
+    count.textContent = "";
+
+    if (!sequence) {
+        message.textContent = "Please enter a DNA sequence.";
+        return;
+    }
+
+    message.textContent = "Scanning DNA sequence...";
+
+    try {
+        const response = await fetch("/api/pam", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                sequence: sequence,
+                pam_pattern: pamPattern
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.detail || "PAM detection failed.");
+        }
+
+        message.textContent = "PAM scan completed.";
+        count.textContent = `Found ${data.site_count} PAM site(s).`;
+
+        output.textContent = JSON.stringify(data.pam_sites, null, 2);
+        results.classList.remove("hidden");
+
+    } catch (error) {
+        message.textContent = error.message;
+    }
+}
